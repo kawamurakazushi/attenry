@@ -1,0 +1,33 @@
+{
+  "name": "Attenry",
+  "description": "Take Attendance on Google Meets.",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "/icon_128.png",
+      "32": "/icon_128.png",
+      "48": "/icon_128.png",
+      "128": "/icon_128.png"
+    }
+  },
+  "options_page": "options.html",
+  "permissions": ["storage", "identity"],
+  "icons": {
+    "16": "/icon_128.png",
+    "32": "/icon_128.png",
+    "48": "/icon_128.png",
+    "128": "/icon_128.png"
+  },
+  "oauth2": {
+    "client_id": "436872719890-9koe95u0m1p8enqfggc97pdnn0dtrlfi.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/calendar.readonly",
+      "https://www.googleapis.com/auth/calendar.events.readonly"
+    ]
+  }
+}
