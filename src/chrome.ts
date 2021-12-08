@@ -11,23 +11,42 @@ export const authorize = () => {
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const getUserList = async () => {
-  let queryOptions = { active: true, currentWindow: true };
-  let [tab] = await chrome.tabs.query(queryOptions);
-  if (tab.id) {
-    chrome.tabs.sendMessage(
-      tab.id,
-      { type: "openUserList" },
-      async (_response) => {
-        if (!tab.id) return;
+  return new Promise<string[]>(async (resolve) => {
+    let queryOptions = { active: true, currentWindow: true };
+    let [tab] = await chrome.tabs.query(queryOptions);
+    if (tab.id) {
+      chrome.tabs.sendMessage(
+        tab.id,
+        { type: "openUserList" },
+        async (_response) => {
+          if (!tab.id) return;
 
-        await sleep(1000);
+          await sleep(1000);
 
-        chrome.tabs.sendMessage(tab.id, { type: "getUserList" }, (response) => {
-          const names: string[] = response.names;
+          chrome.tabs.sendMessage(
+            tab.id,
+            { type: "getUserList" },
+            (response) => {
+              const names: string[] = response.names;
 
-          console.log(names);
-        });
+              console.log(names);
+              resolve(names);
+            }
+          );
+        }
+      );
+    }
+  });
+};
+
+export const getToken = async () => {
+  return new Promise<string | null>((resolve) => {
+    chrome.storage.sync.get(["token"], (obj) => {
+      if ("token" in obj) {
+        resolve(obj.token);
       }
-    );
-  }
+
+      resolve(null);
+    });
+  });
 };
